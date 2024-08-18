@@ -1,8 +1,6 @@
 #include "listdevicesmodel.h"
 
-listDevicesModel::listDevicesModel(QObject *parent)
-    : QAbstractListModel(parent)
-{}
+
 
 
 int listDevicesModel::rowCount(const QModelIndex& parent) const {
@@ -67,4 +65,11 @@ void listDevicesModel::editDevice(const Device &device, int index)
     editDevice.portInArduino = device.portInArduino;
 
     emit dataChanged(this->index(index), this->index(index), {NameDeviceRole,TypeDeviceRole,PathToIconRole,PortInArduinoRole});
+}
+
+void listDevicesModel::cleanModel()
+{
+    beginResetModel();
+    m_data.clear();
+    endResetModel();
 }

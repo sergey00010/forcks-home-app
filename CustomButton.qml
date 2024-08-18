@@ -5,10 +5,10 @@ import QtQuick.Controls 2.15
 Rectangle {
     id: button
     property string textButton: "click"
-    property color normalColor: "#90ec90" // Primary color
-    property color rippleColor: "#85d885" // Darker color for ripple effect
+    property color normalColor:  mainColor // Primary color
+    property color rippleColor: variantColor // Darker color for ripple effect
     property color textColor: "white"
-    property int cornerRadius: 20
+    property int cornerRadius: standartRadius
     property int elevation: 2
     signal buttonClicked
 
@@ -16,7 +16,7 @@ Rectangle {
     height: 48
     color: normalColor
     radius: cornerRadius
-    border.color: "#ffffff00" // Transparent border
+    border.color: rippleColor// Transparent border
 
     // Shadow for elevation effect
     Rectangle {
@@ -26,7 +26,7 @@ Rectangle {
         z: -1
         border.color: "#000000"
         border.width: elevation
-        opacity: 0.3
+        opacity: 0.9
     }
 
     // Button text
@@ -34,8 +34,9 @@ Rectangle {
         text: textButton
         color: textColor
         anchors.centerIn: parent
-        font.pointSize: 20
+        font.pointSize: standartFontSize
     }
+
 
     // Ripple effect on click
     Rectangle {

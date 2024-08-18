@@ -22,8 +22,10 @@ public:
         PortInArduinoRole
     };
 
-    explicit listDevicesModel(QObject *parent = nullptr);
-
+    static listDevicesModel* instance(QObject *parent = nullptr) {
+        static listDevicesModel instance(parent);
+        return &instance;
+    }
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
@@ -32,8 +34,14 @@ public:
     Q_INVOKABLE void removeDevice(int index);
     Q_INVOKABLE void editDevice(const Device &device, int index);
 
+    void cleanModel();
+
 private:
+    explicit listDevicesModel(QObject *parent = nullptr){
+
+    }
     QList<Device> m_data;
+
 };
 
 #endif // LISTDEVICESMODEL_H

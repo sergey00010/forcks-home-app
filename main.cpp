@@ -4,6 +4,8 @@
 
 #include "client.h"
 #include "listdevicesmodel.h"
+#include "devicetypesmodel.h"
+#include "device.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,11 +21,17 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("client",&client);
 
-    listDevicesModel listDeviceModel;
-    listDeviceModel.addDevice({"socket1","socket","C://",12});
-    listDeviceModel.addDevice({"socket2","socket","C://",11});
-    listDeviceModel.addDevice({"socket3","socket","C://",10});
-    engine.rootContext()->setContextProperty("listDeviceModel", &listDeviceModel);
+    listDevicesModel *listDeviceModel = listDevicesModel::instance();
+    engine.rootContext()->setContextProperty("listDeviceModel", listDeviceModel);
+
+    deviceTypesModel deviceModel;
+    deviceModel.addType({"socket","qrc:/images/socket.png"});
+    deviceModel.addType({"lamp","qrc:/images/lamp.png"});
+    engine.rootContext()->setContextProperty("deviceModel", &deviceModel);
+
+    device device;
+    device.loadDevices();
+    engine.rootContext()->setContextProperty("device", &device);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(

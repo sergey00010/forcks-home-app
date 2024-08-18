@@ -9,6 +9,20 @@ ApplicationWindow  {
     visible: true
     title: qsTr("Hello World")
 
+    Material.theme: Material.Dark
+    Material.accent: Material.DeepPurple
+
+    property int standartRadius: 10
+    property int standartFontSize: 20
+    property color mainColor: "#d1c4e9"
+    property color variantColor: "#b39ddb"
+
+    property color secondColor: "#ede7f6"
+    property color secondVariantColor: "#3700B3"
+
+    property color fontColor: "#FFFFFF"
+
+
         /*
         Button{
             Layout.fillWidth: true
@@ -34,7 +48,7 @@ ApplicationWindow  {
                Action {
                    text: qsTr("&New...")
                    onTriggered: {
-
+                        mainStackView.push(createNewDevice)
                     }
                    }
                MenuSeparator { }
@@ -50,11 +64,11 @@ ApplicationWindow  {
         id: mainStackView
         visible: true
         anchors.fill: parent
-        initialItem: createNewDevice
+        initialItem: smartDevicesList
 
         ListView{
             id:smartDevicesList
-            visible: false
+            visible: true
             width: parent.width * 0.9
             height: parent.height * 0.9
             anchors.top:parent.top
@@ -62,18 +76,27 @@ ApplicationWindow  {
             anchors.topMargin: height * 0.02
             anchors.leftMargin: (parent.width - width) * 0.5
             model:listDeviceModel
-            delegate: Button{
+            delegate: Item {
                 width: smartDevicesList.width
-                height: width * 0.2
-                text: model.nameDevice
-                onClicked: {
-                    client.sendMessage("rele1 on")
+                height: width * 0.3
+                    DeviceBlock {
+                        id:deviceBlock
+                        anchors.centerIn: parent
+                        width: smartDevicesList.width *0.95
+                        height: parent.height * 0.9
+                        nameDevice: model.nameDevice
+                        deviceType:model.typeDevice
+                        srcImage: model.pathToIcon
+                        arduinoPort: model.portInArduino
+                        stackview:  mainStackView
+                        index: model.index
                 }
             }
         }
         CreateNewDeviceForm {
             id:createNewDevice
-            visible: true
+            visible: false
+            stackView: mainStackView
         }
     }
 }

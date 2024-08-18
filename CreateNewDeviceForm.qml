@@ -4,8 +4,10 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts
 
 Item {
+    property StackView stackView
         ColumnLayout{
-            anchors.fill: parent;
+            width: parent.width
+            height: parent.height
             spacing: 10
 
             ColumnLayout{
@@ -16,14 +18,15 @@ Item {
                 Text{
                     text: "device name: "
                     Layout.fillWidth: true
-                    font.pointSize: 20
+                    font.pointSize: standartFontSize
+                    color: fontColor
                 }
                 TextField{
                     id:deviceNameField
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     placeholderText: "device name"
-        
+                    font.pointSize: standartFontSize
                 }
             }
 
@@ -35,13 +38,15 @@ Item {
                 Text{
                     text: "device port: "
                     Layout.fillWidth: true
-                    font.pointSize: 20
+                    font.pointSize: standartFontSize
+                    color: fontColor
                 }
                 TextField{
                     id:devicePortField
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     placeholderText: "device port"
+                    font.pointSize: standartFontSize
                 }
             }
 
@@ -53,7 +58,8 @@ Item {
                 Text{
                     text: "device type: "
                     Layout.fillWidth: true
-                    font.pointSize: 20
+                    font.pointSize: standartFontSize
+                    color: fontColor
                 }
                 RowLayout{
                     Layout.fillWidth: true
@@ -62,7 +68,13 @@ Item {
                         id:deviceTypeBox
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        model:["socket","lamp"]
+                        model:deviceModel
+                        textRole: "typeDevice"
+                        font.pointSize: standartFontSize
+                        onCurrentIndexChanged: {
+                            //deviceIcon.source = deviceModel.get(currentIndex).pathToIcon
+                            deviceIcon.source = deviceModel.getIconPath(currentIndex)
+                        }
                     }
                     Image {
                         id: deviceIcon
@@ -70,28 +82,32 @@ Item {
                         Layout.preferredHeight: width
                         source: "qrc:/images/socket.png"
                         fillMode: Image.PreserveAspectFit
-                    }
+                }
                 }
             }
 
             RowLayout{
                 id:actionsButtonsLayout
                 Layout.fillWidth: true
-                Layout.preferredHeight: parent.height * 0.2
+                Layout.preferredHeight: parent.height * 0.1
                 spacing:3
                 CustomButton {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    cornerRadius: standartRadius
                     textButton: "create"
                     onButtonClicked: {
-
+                        device.saveNewDevice(deviceNameField.text,deviceTypeBox.currentText,deviceIcon.source,devicePortField.text);
+                        stackView.pop()
                     }
                 }
                 CustomButton {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    cornerRadius: standartRadius
                     textButton: "back"
                     onButtonClicked: {
+                        stackView.pop()
                     }
                 }
             }
